@@ -3,62 +3,35 @@
 //  BlahViewRedux
 //
 //  Created by Matthew Burke on 10/12/15.
-//  Copyright © 2015 BlueDino Software. 
+//  Copyright © 2015-2021 BlueDino Software.
 
 import UIKit
 
-class ViewController: UIViewController
-{
+class ViewController: UIViewController {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        createBlahViews()
 
-  override func viewWillAppear(animated: Bool)
-  {
-    super.viewWillAppear(animated)
-    createSubViews()
-    
-    let tgc = UITapGestureRecognizer(target: self, action: "replaceSubViews")
-    view.addGestureRecognizer(tgc)
-  }
+        let tgc = UITapGestureRecognizer(target: self, action: #selector(replaceBlahViews))
+        view.addGestureRecognizer(tgc)
+    }
 
+    @objc
+    private func replaceBlahViews() {
+        view.subviews.forEach { $0.removeFromSuperview() }
+        createBlahViews()
+    }
 
-  
-  
-  func replaceSubViews()
-  {
-    for subView in view.subviews {
-      subView.removeFromSuperview()
+    private func createBlahViews() {
+        for _ in 0...Int.random(in: 4...20) {
+            let blahView = BlahView()
+
+            let (x, y) = (Int.random(in: 20...300), Int.random(in: 20...300))
+            let (width, height) = (Int.random(in: 50...200), Int.random(in: 50...200))
+            blahView.frame = CGRect(x: x, y: y, width: width, height: height)
+
+            view.addSubview(blahView)
+        }
     }
-    createSubViews()
-  }
-  
-  
-  
-  
-  func createSubViews()
-  {
-    for _ in 0 ... randomFrom(4, to: 20) {
-      let blahView = BlahView()
-      
-      let (x, y) = (randomFrom(20, to: 300), randomFrom(20, to: 300))
-      let (width, height) = (randomFrom(50, to: 200), randomFrom(50, to: 200))
-      
-      blahView.frame = CGRect(x: x, y: y, width: width, height: height)
-      view.addSubview(blahView)
-    }
-  }
-  
-  
-  
-  
-  func randomFrom(lower: UInt32, to: UInt32) -> Int
-  {
-    guard to >= lower else {
-      return 0
-    }
-    
-    let range = to - lower
-    return Int(lower) + Int(arc4random() % range)
-  }
-  
-  
 }
 
